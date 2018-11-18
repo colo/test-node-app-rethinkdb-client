@@ -1,0 +1,16 @@
+{
+  "name": "test-node-app-rethinkdb-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.1.0",
+    "mootools": "^1.5.2",
+    "node-app-rethinkdb-client": "git+https://github.com/colo/node-app-rethinkdb-client.git"
+  }
+}
