@@ -111,6 +111,22 @@ let MyApp = new Class({
         path: ':database/:table',
         callbacks: ['filter']
       }],
+      map: [{
+        path: ':database/:table',
+        callbacks: ['map']
+      }],
+      withFields: [{
+        path: ':database/:table',
+        callbacks: ['withFields']
+      }],
+      concatMap: [{
+        path: ':database/:table',
+        callbacks: ['concatMap']
+      }],
+      orderBy: [{
+        path: ':database/:table',
+        callbacks: ['orderBy']
+      }],
     },
   },
 
@@ -182,13 +198,11 @@ let MyApp = new Class({
   },
   indexList: function(){
     debug('indexList %o', arguments)
-    this.indexRename({uri: 'test/test_table', args:['testIndex', 'renamedIndex', {overwrite: false}]})
+    this.indexRename({uri: 'test/test_table', args:['testIndex', 'title', {overwrite: false}]})
   },
   indexRename: function(){
     debug('indexRename %o', arguments)
-    this.indexDrop({uri: 'test/test_table', args:['renamedIndex']})
-  },
-  indexDrop: function(){
+    // this.indexDrop({uri: 'test/test_table', args:['renamedIndex']})
     debug('indexDrop %o', arguments)
     this.insert({uri: 'test/test_table', args:[{
         id: 1,
@@ -196,6 +210,14 @@ let MyApp = new Class({
         content: "Dolor sit amet"
     }]})
   },
+  // indexDrop: function(){
+  //   debug('indexDrop %o', arguments)
+  //   this.insert({uri: 'test/test_table', args:[{
+  //       id: 1,
+  //       title: "Lorem ipsum",
+  //       content: "Dolor sit amet"
+  //   }]})
+  // },
   insert: function(){
     debug('insert %o', arguments)
     this.update({uri: 'test/test_table', args:[{status: "published"}]})
@@ -238,7 +260,55 @@ let MyApp = new Class({
   },
   filter: function(){
     debug('filter %o', arguments)
-    this.delete({uri: 'test/test_table', args:[1, {index: 'renamedIndex'}]})
+    // this.delete({uri: 'test/test_table', args:[1, {index: 'renamedIndex'}]})
+    this.map({
+      uri: 'test/test_table',
+      args:function (doc) {
+        return doc.merge({userId: doc('id')}).without('id');
+      }
+    })
+    // this.map({
+    //   uri: 'test/test_table',
+    //   args:[
+    //     [[100, 200, 300, 400],[10, 20, 30, 40],[1, 2, 3, 4]],
+    //     function (val1, val2, val3) {
+    //       return val1.add(val2).add(val3);
+    //     }
+    //   ]
+    // })
+
+    // this.map({
+    //   uri: 'test/test_table',
+    //   expr: [1, 2, 3, 4, 5],
+    //   args:function (val) {return val.mul(val);}
+    // })
+  },
+  map: function(){
+    debug('map %o', arguments)
+    this.withFields({uri: 'test/test_table', args:['id', 'status']})
+
+    // this.delete({uri: 'test/test_table', args:[1, {index: 'renamedIndex'}]})
+  },
+  withFields: function(){
+    debug('withFields %o', arguments)
+
+    this.concatMap({
+      uri: 'test/test_table',
+      expr: [1, 2, 3, 4, 5],
+      args:function(x) { return [x, x.mul(2)] }
+    })
+  },
+  concatMap: function(){
+    debug('concatMap %o', arguments)
+    this.orderBy({uri: 'test/test_table', args:['status',{index: 'title'}]})
+
+    // this.delete({uri: 'test/test_table', args:[1, {index: 'renamedIndex'}]})
+  },
+  orderBy: function(){
+    debug('orderBy %o', arguments)
+    // this.withFields({uri: 'test/test_table', args:['id', 'status']})
+
+    // this.delete({uri: 'test/test_table', args:[1, {index: 'renamedIndex'}]})
   },
 })
 
