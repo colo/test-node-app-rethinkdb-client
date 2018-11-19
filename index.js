@@ -95,6 +95,22 @@ let MyApp = new Class({
         path: ':database/:table',
         callbacks: ['delete']
       }],
+      get: [{
+        path: ':database/:table',
+        callbacks: ['get']
+      }],
+      getAll: [{
+        path: ':database/:table',
+        callbacks: ['getAll']
+      }],
+      between: [{
+        path: ':database/:table',
+        callbacks: ['between']
+      }],
+      filter: [{
+        path: ':database/:table',
+        callbacks: ['filter']
+      }],
     },
   },
 
@@ -200,11 +216,29 @@ let MyApp = new Class({
   },
   sync: function(){
     debug('sync %o', arguments)
-    this.delete({uri: 'test/test_table'})
+
+    this.get({uri: 'test/test_table', args: [1]})
   },
   delete: function(){
     debug('delete %o', arguments)
     // this.delete({uri: 'test/test_table'})
+  },
+  get: function(){
+    debug('get %o', arguments)
+    this.getAll({uri: 'test/test_table', args: [1]})
+
+  },
+  getAll: function(){
+    debug('getAll %o', arguments)
+    this.between({uri: 'test/test_table', args:[1, 3, {}]})
+  },
+  between: function(){
+    debug('between %o', arguments)
+    this.filter({uri: 'test/test_table', args:[{status: "unpublished"}]})
+  },
+  filter: function(){
+    debug('filter %o', arguments)
+    this.delete({uri: 'test/test_table', args:[1, {index: 'renamedIndex'}]})
   },
 })
 
