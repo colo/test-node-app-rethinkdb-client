@@ -127,6 +127,10 @@ let MyApp = new Class({
         path: ':database/:table',
         callbacks: ['orderBy']
       }],
+      distinct: [{
+        path: ':database/:table',
+        callbacks: ['distinct']
+      }],
     },
   },
 
@@ -306,9 +310,14 @@ let MyApp = new Class({
   },
   orderBy: function(){
     debug('orderBy %o', arguments)
+    this.distinct({uri: 'test/test_table', args:{index: 'title'}})
     // this.withFields({uri: 'test/test_table', args:['id', 'status']})
 
     // this.delete({uri: 'test/test_table', args:[1, {index: 'renamedIndex'}]})
+  },
+  distinct: function(){
+    debug('distinct %o', arguments)
+
   },
 })
 
