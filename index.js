@@ -256,10 +256,14 @@ let MyApp = new Class({
   },
   getAll: function(){
     debug('getAll %o', arguments)
-    this.between({uri: 'test/test_table', args:[1, 3, {}]})
+    this.between({uri: 'test/test_table', args:[1, 3, {}], field: 'id'})
   },
-  between: function(){
-    debug('between %o', arguments)
+  between: function(err, resp, params){
+    debug('between %o', resp)
+    resp.toArray(function(err, arr){
+      debug('between arr %o', arr)
+    })
+
     this.filter({uri: 'test/test_table', args:[{status: "unpublished"}]})
   },
   filter: function(){
