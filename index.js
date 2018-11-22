@@ -245,8 +245,11 @@ let MyApp = new Class({
 
     this.get({uri: 'test/test_table', args: [1]})
   },
-  delete: function(){
+  delete: function(err, resp, params){
     debug('delete %o', arguments)
+    // resp.toArray(function(arr){
+    //   debug('delete cursor %o', arr)
+    // })
     // this.delete({uri: 'test/test_table'})
   },
   get: function(){
@@ -321,7 +324,11 @@ let MyApp = new Class({
   },
   distinct: function(){
     debug('distinct %o', arguments)
-
+    this.delete({
+      uri: 'test/test_table',
+      query: this.r.db('test').table('test_table').get(1),
+      args:{durability:"soft", return_changes: true}
+    })
   },
 })
 
